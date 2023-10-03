@@ -1,0 +1,135 @@
+###### Main Service ######
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acmeair-cardservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: acmeair-card-deployment
+  template:
+    metadata:
+      labels:
+        name: acmeair-card-deployment
+        app: acmeair-3
+    spec:
+      containers:
+        - name: acmeair-cardservice-java
+          image: image-registry.openshift-image-registry.svc:5000/acmeaircard/acmeair-cardservice-java:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+          env:
+          - name: USERNAME
+            value: admin
+          - name: PASSWORD
+            value: password
+          - name: MONGO_PORT
+            value: "27017"
+          - name: MONGO_HOST
+            value: acmeair-card-db
+          - name: MQENVURL
+            value: "/mq-files/conf/env.json"
+          - name: MQCCDTURL
+            value: "file:///mq-files/conf/ccdt.json"
+          - name: MQCLNTCF
+            value: "file:///mq-files/conf/mqclient.ini"
+          - name: MQCLIENTKEYSTORE
+            value: "file:///mq-files/keys/clientkey.jks"
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /mq-files/conf/ccdt.json
+              subPath: ccdt.json
+              name: mq-conf-files
+            - mountPath: /mq-files/conf/mqclient.ini
+              subPath: mqclient.ini
+              name: mq-conf-files
+            - mountPath: /mq-files/conf/env.json
+              subPath: env.json
+              name: mq-conf-files
+            - mountPath: /mq-files/keys/
+              name: mq-client-keys
+      volumes:
+      - configMap:
+          items:
+          - key: env.json
+            path: env.json
+          - key: ccdt.json
+            path: ccdt.json
+          - key: mqclient.ini
+            path: mqclient.ini
+          name: mq-conf-files
+        name: mq-conf-files
+      - secret:
+          secretName: mq-client-keys
+          items:
+          - key: clientkey.jks
+            path: clientkey.jks
+        name: mq-client-keys
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acmeair-card-service
+spec:
+  ports:
+    - port: 8080
+  selector:
+    name: acmeair-card-deployment
+---
+##### Credit Cards Database  #####
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    service: acmeair-card-db
+  name: acmeair-card-db
+spec:
+  ports:
+  - name: "27017"
+    port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    name: acmeair-card-db
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: acmeair-card-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: acmeair-card-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: acmeair-card-db
+    spec:
+      volumes:
+        - name: acmeair-card-db-1
+          emptyDir: {}
+        - name: acmeair-card-db-2
+          emptyDir: {}
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/acmeaircard/mongo:latest
+        name: acmeair-card-db
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+          - name: acmeair-card-db-1
+            mountPath: /data/configdb
+          - name: acmeair-card-db-2
+            mountPath: /data/db
+      restartPolicy: Always
+status: {}

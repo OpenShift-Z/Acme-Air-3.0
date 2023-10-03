@@ -1,0 +1,223 @@
+<!-- ***************************************************************************
+* Copyright (c) 2016 IBM Corp.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+**************************************************************************** -->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Acme Air</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/dijit.css">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojox/grid/resources/claroGrid.css">
+
+  <script type="text/javascript" src="js/acmeair-common.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
+
+  <script>
+    dojo.require("dojo.parser");
+
+	dojo.require("dijit.Dialog");
+	dojo.require("dijit.layout.StackContainer");
+	dojo.require("dijit.layout.ContentPane");
+	dojo.require("dijit.form.DateTextBox");
+	dojo.require("dijit.form.FilteringSelect");
+	dojo.require("dijit.form.CheckBox");
+    dojo.require("dijit.Toolbar");
+    dojo.require("dijit.Declaration");
+	
+	dojo.require("dojo.currency");
+	
+	dojo.require("dojo.store.Memory");
+	dojo.require("dojox.grid.DataGrid");
+	dojo.require("dojo.data.ItemFileReadStore");
+	dojo.require("dojo.data.ItemFileWriteStore");
+
+    dojo.require("dojo.cookie");
+
+    dojo.addOnLoad(pageLoaded);
+
+    function pageLoaded() {
+    	updateLoggedInUserWelcome();
+    }
+    
+    function processCard() {
+		var cardHolder = dijit.byId('cardHolder').get('value');
+		var cardNum = dijit.byId('cardNum').get('value');
+		var expDate = dijit.byId('expDate').get('value');
+		var secCode = dijit.byId('secCode').get('value');
+		var addressLine1 = dijit.byId('addressLine1').get('value');
+		var addressLine2 = dijit.byId('addressLine2').get('value');
+		var city = dijit.byId('city').get('value');
+		var state = dijit.byId('state').get('value');
+		var zipCode = dijit.byId('zipCode').get('value');
+		var country = dijit.byId('country').get('value');
+		
+/* 		var processedDate = expDate.substring(0,2) + "/" + expDate.substring(7,9);
+		console.log(expDate);
+ */		
+/* 		dojo.xhrPost({
+			content : {
+				'cardNumber': cardNum,
+				'expDate': expDate,
+				'cardholderName': cardHolder,
+				'billingAddressLine1': addressLine1,
+				'billingAddressCity': city
+			},
+			url: 'http://localhost:9080/acmeair-cardservice-java/api/cardService/processCard',
+			handleAs: "json",
+			load: function(response) {
+				alert (response);
+				console.log('http body:' + response.data);
+			},
+			error: function(error) {
+				alert(error);
+				console.log('http body:' + error.text);
+			}
+		}); */
+		
+ 		$.ajax({
+	        url: window.location.protocol+ '//' + window.location.host + '/acmeair-cardservice/api/cardService/processCard',
+	        type: "POST",
+	        dataType: "json",
+	        data : {
+	        	'cardNumber': cardNum,
+				'expDate': expDate,
+				'securityCode': secCode,
+				'cardholderName': cardHolder,
+				'billingAddressLine1': addressLine1,
+				'billingAddressLine2': addressLine2,
+				'billingAddressCity': city,
+				'billingAddressZipCode': zipCode,
+				'billingAddressCountry': country,
+				'billingAddressStateProvince': state
+	        },
+	        success: function(response){
+	        	alert(response.responseJSON);
+	            console.log(response);
+	        },
+	        error: function(error){
+	            console.log(error);
+	            alert(error.responseJSON);
+	        }
+	    });
+
+    }
+    
+  </script>
+  <script type="text/javascript">
+      function getDateString() {
+    	var now = new Date();
+  	  	return now.getHours() + ":" + ("0" + now.getMinutes()).slice(-2) +
+  	  		":" + ("0" + now.getSeconds()).slice(-2);
+      }
+
+  </script>
+</head>
+
+<body class="claro">
+
+<span id="variousDialogs" style="display:none">
+<div dojoType="dijit.Dialog" id="loginWaitDialog" title="Please Wait">
+		<table width="258">
+			<tr><td>Logging in ...</td></tr>
+		</table>
+</div>
+
+<div dojoType="dijit.Dialog" id="loginDialog" title="Login">
+		<table width="258">
+			<tr>
+				<td><label>Login</label></td>
+				<td><input type="text" trim="true" dojoType="dijit.form.TextBox" value="uid0@email.com" name="login" id="userId"/></td>
+			</tr>
+			<tr>
+				<td><label>Password</label></td>
+				<td><input type="password" trim="true" dojoType="dijit.form.TextBox" value="password" name="password" id="password"/></td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td  align="center" valign="top" width="40%"><button dojoType="dijit.form.Button" id="LoginButton" onClick="login()">Ok</button></td>
+							<td align="left" valign="top" width="3%">&nbsp;</td>
+							<td align="left" valign="top" width="57%"><button dojoType="dijit.form.Button" onclick="hideLoginDialog()" id="Cancel">Cancel</button></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+</div>
+</span>
+
+<div id="main">
+	<br/>
+	<header>
+		<img src="images/AcmeAir.png" alt="Acme Air"/><br/>
+		<div class="text-align: left">Flights, Baggage, and Loyalty all with a Smile</div><br/>
+	</header>
+	<div id="welcomeback"><div id="loggedinwelcome"></div>
+	</div>
+	<div id="main_content">
+		<span data-dojo-type="dijit.Declaration" data-dojo-props='widgetClass:"ToolbarSectionStart", defaults:{ label: "Label"}'>
+			<span data-dojo-type="dijit.ToolbarSeparator"></span><i>${label}:</i>
+		</span>
+
+		<div id="toolbar5" data-dojo-type="dijit.Toolbar">
+			<div data-dojo-type="ToolbarSectionStart" data-dojo-props='label:"Actions"'></div>
+			<div id="toolbar5.home" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='index.html'">Home</div>
+			<div id="toolbar5.flights" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='query.html'">Flights</div>
+			<div id="toolbar5.checkin" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='checkin.html'">Checkin</div>
+			<div id="toolbar5.payment" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='payment.html'">Payment</div>
+			<div id="toolbar5.login" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="showLoginDialog()">Login</div>
+			<div id="toolbar5.logout" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="logout()">Logout</div>
+			<div id="toolbar5.account" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='profile.html'">Account</div>
+			<div id="toolbar5.support" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='support.html'">Support</div>
+		</div>
+
+		<div class="content">
+
+		<div data-dojo-type="dijit.layout.StackContainer" id="stackContainer" data-dojo-props="doLayout: false">
+			<div data-dojo-type="dijit.layout.ContentPane" title="payment">
+				<label for="cardNum">Card Number: </label><input type="text" value="" name="cardNum" id="cardNum" dojoType="dijit.form.TextBox" required="true"><br/>
+<!-- 				<label for="expDate">Expiration Date: </label><input type="text" name="expDate" id="expDate" data-dojo-type="dijit.form.DateTextBox" required="false" value=""/><br/>-->
+				<label for="expDate">Expiration Date: </label><input type="text" name="expDate" id="expDate" data-dojo-type="dijit.form.TextBox" required="false" value=""/><br/>
+				<label for="secCode">Security Code: </label><input type="text" name="secCode" id="secCode" data-dojo-type="dijit.form.TextBox" required="true" value=""/><br/><div/>
+				<label for="cardHolder">Card Holder Name: </label><input type="text" dojoType="dijit.form.TextBox" value="" name="cardHolder" id="cardHolder" required="true"><br/>
+				<label for="addressLine1">Billing Address Line 1: </label><input type="text" value="" dojoType="dijit.form.TextBox" name="addressLine1" id="addressLine1" required="true"><br/>
+				<label for="addressLine2">Billing Address Line 2: </label><input type="text" value="" dojoType="dijit.form.TextBox" name="addressLine2" id="addressLine2" required="false"><br/>
+				<label for="city">City: </label><input type="text" value="" name="city" id="city" dojoType="dijit.form.TextBox" required="true"></select><br/>
+				<label for="state">State/Province: </label><input type="text" value="" dojoType="dijit.form.TextBox" name="state" id="state" required="false"></select><br/>
+				<label for="zipCode">Zip Code: </label><input type="text" value="" name="zipCode" dojoType="dijit.form.TextBox" id="zipCode" required="false"></select><br/>
+				<label for="country">Country: </label><input type="text" value="" name="country" dojoType="dijit.form.TextBox" id="country" required="false"></select><br/>
+				<button dojoType="dijit.form.Button" id="cardSubmit" onClick="processCard()">Submit</button><br/>
+			</div>
+		</div>
+		</div>
+		</div>
+	</div>
+	<footer>
+		<p>Acme Air</p>
+	</footer>
+</div>
+
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,24 @@
+service:
+  enabled: true
+  name: acmeair-booking-service
+  port: 9080
+  targetPort: 9080
+  type: ClusterIP
+
+ssl:
+  enabled: false
+
+ingress:
+  enabled: true
+  path: "/booking"
+  rewriteTarget: "/booking"
+  host: ""
+  secretName: ""
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+
+env:
+  jvmArgs: "-DcustomerClient/mp-rest/url=http://acmeair-customer-service:9080/customer -DflightClient/mp-rest/url=http://acmeair-flight-service:9080/flight -DMONGO_HOST=acmeair-booking-db -Dmp.jwt.verify.publickey.location=http://acmeair-auth-service:9080/auth/getJwk"

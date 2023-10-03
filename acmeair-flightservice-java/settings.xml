@@ -1,0 +1,20 @@
+<settings>
+  <proxies>
+   <proxy>
+      <id>ten-dot-http-proxy</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>10.20.80.216</host>
+      <port>3128</port>
+      <nonProxyHosts>.cluster.local|.fpet.pokprv.stglabs.ibm.com.svc|10.0.0.0/8|10.128.0.0/14|10.20.84.0/22|127.0.0.1|172.30.0.0/16|api-int.build0.fpet.pokprv.stglabs.ibm.com|localhost</nonProxyHosts>
+    </proxy>
+    <proxy>
+      <id>ten-dot-https-proxy</id>
+      <active>true</active>
+      <protocol>https</protocol>
+      <host>10.20.80.216</host>
+      <port>3128</port>
+      <nonProxyHosts>.cluster.local|.fpet.pokprv.stglabs.ibm.com.svc|10.0.0.0/8|10.128.0.0/14|10.20.84.0/22|127.0.0.1|172.30.0.0/16|api-int.build0.fpet.pokprv.stglabs.ibm.com|localhost</nonProxyHosts>
+    </proxy>
+  </proxies>
+</settings>

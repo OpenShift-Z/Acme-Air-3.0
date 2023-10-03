@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="new server">
+  <!-- Enable features -->
+  <featureManager>
+    <feature>microProfile-3.0</feature>
+    <feature>cdi-2.0</feature>
+        <feature>jaxrs-2.1</feature>
+	<feature>jsp-2.3</feature>
+	<feature>transportSecurity-1.0</feature>
+  </featureManager>
+
+  <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
+<!--   <httpEndpoint id="defaultHttpEndpoint" host="*"
+              httpPort="9080" httpsPort="9443">
+  </httpEndpoint> -->
+  
+    <variable name="default.http.port" defaultValue="8080"/>
+    <variable name="default.https.port" defaultValue="8443"/>
+
+    <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>                 
+  
+  
+
+  <quickStartSecurity userName="${env.USERNAME}" userPassword="${env.PASSWORD}" />
+
+  <webApplication name="acmeair-cardservice" location="acmeair-cardservice-java-3.1.war">
+    <!-- enable visibility to third party apis -->
+    <classloader apiTypeVisibility="api,ibm-api,spec,stable,third-party"/>
+  </webApplication>
+
+</server>

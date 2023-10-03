@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: Acmeair Card Service
+  description: App for adding and retrieving fake credit cards for Acmeair
+  license:
+    name: Eclipse Public License - v 1.0
+    url: https://www.eclipse.org/legal/epl-v10.html
+  version: "1.0"
+paths:
+  /api/cardService/getCardByCardholder:
+    get:
+      operationId: getCardByCardholder
+      description: Get all credit cards associated with a card holder's first and last name
+      summary: Get credit cards by holder name
+      parameters:
+        - name: cardholderName
+          in: query
+          required: true
+          description: Card holder first and last name
+          example: John Smith
+          schema:
+            type: String
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+        "400":
+          description: Bad request card holder not specified or not found
+          content:
+            application/json: {}
+  /api/cardService/getCreditCardInfo:
+    get:
+      summary: Get credit card info
+      description: Returns all currently stored credit card numbers, names, addresses, security codes and expiration dates
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json: {}
+  /api/cardService/processCard:
+    post:
+      summary: Add a new credit card
+      description: Add a new credit card number, name, address, security code and expiration date
+      parameters:
+      - name: cardNumber
+        in: query
+        required: true
+        description: FAKE 16 digit credit card number beginning with 7, 8 or 9
+        example: '9123456789101112'
+        schema:
+          type: String
+      - name: expDate
+        in: query
+        required: true
+        description: Expiration date in MM/YY format
+        example: 12/34
+        schema:
+          type: String
+      - name: securityCode
+        in: query
+        required: true
+        description: 3 Digit CCV security code
+        example: '123'
+        schema:
+          type: String
+      - name: cardholderName
+        in: query
+        required: true
+        description: Card holder first and last name
+        example: John Smith
+        schema:
+          type: String
+      - name: billingAddressLine1
+        in: query
+        required: true
+        description: First line of billing address
+        example: 123 Main Street
+        schema:
+          type: String
+      - name: billingAddressLine2
+        in: query
+        required: false
+        description: Second line of billing address
+        example: Apartment A
+        schema:
+          type: String
+      - name: billingAddressZipCode
+        in: query
+        required: true
+        description: 5 or 8 digit zip code
+        example: 12345
+        schema:
+          type: String
+      - name: billingAddressCity
+        in: query
+        required: true
+        description: Billing address town or city
+        example: Anytown
+        schema:
+          type: String
+      - name: billingAddressStateProvince
+        in: query
+        required: false
+        description: Billing address state or province
+        example: New York
+        schema:
+          type: String
+      - name: billingAddressCountry
+        in: query
+        required: true
+        description: Billing address country
+        example: United States
+        schema:
+          type: String
+      responses:
+        "400":
+          description: Bad request
+          content:
+            application/json: {}
+        "200":
+          description: Card processed successfully

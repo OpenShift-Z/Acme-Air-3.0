@@ -1,0 +1,43 @@
+language: bash
+branches:
+  only:
+  - master
+sudo: required
+services:
+- docker
+dist: xenial
+jobs:
+  include:
+  - stage: Build
+    os: linux
+    env: DOCKER_REGISTRY=sys-ltic-docker-local.artifactory.swg-devops.com DOCKER_ARCH=amd64
+    script: 
+    - "make docker:login"
+    - "./acmeair-mainservice-java/scripts/buildAndPushtoArtifactory.sh "
+  - os: linux
+    env: DOCKER_REGISTRY=sys-loz-test-team-docker-local.artifactory.swg-devops.com DOCKER_ARCH=amd64
+    script: 
+    - "make docker:login"
+    - "./acmeair-mainservice-java/scripts/buildAndPushtoArtifactory.sh "
+  - os: linux-s390
+    env: DOCKER_REGISTRY=sys-ltic-docker-local.artifactory.swg-devops.com DOCKER_ARCH=s390x
+    script: 
+    - "make docker:login"
+    - "./acmeair-mainservice-java/scripts/buildAndPushtoArtifactory.sh "
+  - os: linux-s390
+    env: DOCKER_REGISTRY=sys-loz-test-team-docker-local.artifactory.swg-devops.com DOCKER_ARCH=s390x
+    script: 
+    - "make docker:login"
+    - "./acmeair-mainservice-java/scripts/buildAndPushtoArtifactory.sh "
+
+  - stage: Manifest
+    env:
+     - DOCKER_REGISTRY=sys-ltic-docker-local.artifactory.swg-devops.com
+    script:
+    - sudo bash ci/enable-experimental.sh
+    - sudo bash ci/manifest-create-and-push.sh
+  - env:
+     - DOCKER_REGISTRY=sys-loz-test-team-docker-local.artifactory.swg-devops.com
+    script:
+    - sudo bash ci/enable-experimental.sh
+    - sudo bash ci/manifest-create-and-push.sh

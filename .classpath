@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 15.0.2 [15.0.2]"/>
+	<classpathentry kind="src" path="acmeair-authservice-java/src/main/java"/>
+	<classpathentry kind="src" path="acmeair-authservice-java/src/test/java"/>
+	<classpathentry kind="src" path="acmeair-bookingservice-java/src/main/java"/>
+	<classpathentry kind="src" path="acmeair-bookingservice-java/src/main/test/java"/>
+	<classpathentry kind="src" path="acmeair-customerservice-java/src/main/java"/>
+	<classpathentry kind="src" path="acmeair-customerservice-java/src/main/test/java"/>
+	<classpathentry kind="src" path="acmeair-flightservice-java/src/main/java"/>
+	<classpathentry kind="src" path="acmeair-flightservice-java/src/main/test/java"/>
+	<classpathentry kind="src" path="acmeair-mainservice-java/src/main/test/java"/>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/jaxrs/tools/wadl2java.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-binarylogviewer.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-featurelist.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-javaagent.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-productutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-schemagen.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-securityutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-server.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-serverSchemagen.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/bin/tools/ws-webserverPluginutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/clients/restConnector.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/lib/bootstrap-agent.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-authservice-java/target/liberty/wlp/lib/ws-launch.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/jaxrs/tools/wadl2java.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-binarylogviewer.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-featurelist.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-javaagent.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-productutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-schemagen.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-securityutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-server.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-serverSchemagen.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/bin/tools/ws-webserverPluginutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/lib/bootstrap-agent.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-bookingservice-java/target/liberty/wlp/lib/ws-launch.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/jaxrs/tools/wadl2java.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-binarylogviewer.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-featurelist.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-javaagent.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-productutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-schemagen.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-securityutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-server.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-serverSchemagen.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/bin/tools/ws-webserverPluginutil.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/clients/restConnector.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/lib/bootstrap-agent.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="acmeair-mainservice-java/target/liberty/wlp/lib/ws-launch.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/john/LinuxCoC/liberty/dev/api/spec/com.ibm.websphere.javaee.jsonp.1.1_1.0.52.jar"/>
+	<classpathentry kind="output" path="acmeair-authservice-java/target/classes"/>
+</classpath>

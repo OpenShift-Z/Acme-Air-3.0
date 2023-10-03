@@ -1,0 +1,24 @@
+service:
+  enabled: true
+  name: acmeair-flight-service
+  port: 9080
+  targetPort: 9080
+  type: ClusterIP
+
+ssl:
+  enabled: false
+
+ingress:
+  enabled: true
+  path: "/flight"
+  rewriteTarget: "/flight"
+  host: ""
+  secretName: ""
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+
+env:
+  jvmArgs: "-DMONGO_HOST=acmeair-flight-db"

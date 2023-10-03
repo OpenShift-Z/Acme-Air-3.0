@@ -1,0 +1,21 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: acmeair-card-route
+spec:
+  host: defaultacmeair.com
+  path: /acmeair-cardservice
+  to:
+    kind: Service
+    name: acmeair-card-service
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: acmeair-card-openapi-route
+spec:
+  host: defaultacmeair.com
+  path: /openapi
+  to:
+    kind: Service
+    name: acmeair-card-service

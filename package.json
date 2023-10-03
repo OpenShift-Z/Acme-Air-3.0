@@ -1,0 +1,13 @@
+{
+  "name": "acmeair-liberty",
+  "version": "3.0.0",
+  "description": "AcmeAir for OpenShift 3",
+  "main": "acmeaircardservice.war",
+  "scripts": {
+    "start": "server start acmeair"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/LinuxCoC/Acme-Air-3.0.git"
+  }
+}

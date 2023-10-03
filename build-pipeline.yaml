@@ -1,0 +1,193 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: s2i-card-build
+  namespace: acmeaircard
+spec:
+  params:
+    - default: acmeaircard
+      name: deployment-name
+      type: string
+    - default: 'git@github.ibm.com:LinuxCoC/Acme-Air-3.0.git'
+      description: url of the git repo for acmeair deployment
+      name: git-url
+      type: string
+    - default: main
+      description: revision of the git repo to be deployed
+      name: git-revision
+      type: string
+  tasks:
+    - name: fetch-repository
+      params:
+        - name: url
+          value: $(params.git-url)
+        - name: revision
+          value: $(params.git-revision)
+        - name: deleteExisting
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-ws
+    - name: build-cardservice-image
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/acmeair-cardservice-java:s2i
+        - name: CONTEXT
+          value: /workspace/source/acmeair-cardservice-java
+        - name: DOCKERFILE
+          value: Dockerfile
+        - name: FORMAT
+          value: docker
+        - name: SKIP_PUSH
+          value: 'false'
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-ws
+    - name: build-mainservice-image
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/acmeair-mainservice-java:s2i
+        - name: CONTEXT
+          value: /workspace/source/acmeair-mainservice-java
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: FORMAT
+          value: docker
+        - name: SKIP_PUSH
+          value: 'false'
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-ws
+    - name: build-authservice-image
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/acmeair-authservice-java:s2i
+        - name: CONTEXT
+          value: /workspace/source/acmeair-authservice-java
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: FORMAT
+          value: docker
+        - name: SKIP_PUSH
+          value: 'false'
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-ws
+    - name: build-bookingservice-image
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/acmeair-bookingservice-java:s2i
+        - name: CONTEXT
+          value: /workspace/source/acmeair-bookingservice-java
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: FORMAT
+          value: docker
+        - name: SKIP_PUSH
+          value: 'false'
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-ws
+    - name: build-flightservice-image
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/acmeair-flightservice-java:s2i
+        - name: CONTEXT
+          value: /workspace/source/acmeair-flightservice-java
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: FORMAT
+          value: docker
+        - name: SKIP_PUSH
+          value: 'false'
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-ws
+    - name: build-customerservice-image
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/acmeair-customerservice-java:s2i
+        - name: CONTEXT
+          value: /workspace/source/acmeair-customerservice-java
+        - name: DOCKERFILE
+          value: ./Dockerfile
+        - name: FORMAT
+          value: docker
+        - name: SKIP_PUSH
+          value: 'false'
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: shared-ws
+    - name: create-deployment
+      params:
+        - name: SCRIPT
+          value: >
+            sh
+            /workspace/manifest-dir/acmeair-mainservice-java/scripts/deployToOpenshift.sh
+            acmeair-$(context.pipelineRun.namespace).apps.lzocp1.pok.stglabs.ibm.com
+            ; 
+      runAfter:
+        - build-authservice-image
+        - build-bookingservice-image
+        - build-cardservice-image
+        - build-customerservice-image
+        - build-flightservice-image
+        - build-mainservice-image
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+      workspaces:
+        - name: manifest-dir
+          workspace: shared-ws
+    - name: wait-for-deployment
+      params:
+        - name: SCRIPT
+          value: >
+            oc wait --for=condition=Ready pod -l app=acmeair-3 -n
+            $(context.pipelineRun.namespace) --timeout=20m
+      runAfter:
+        - create-deployment
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+  workspaces:
+    - name: shared-ws

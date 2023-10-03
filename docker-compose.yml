@@ -1,0 +1,87 @@
+version: "3.7"
+
+networks:
+  acmeair:
+    name: acmeair
+    external: false
+
+services:
+  acmeair-booking-db:
+    image: mongo:latest
+    container_name: acmeair-booking-db
+    networks:
+      - acmeair
+      
+  acmeair-customer-db:
+    image: mongo:latest
+    container_name: acmeair-customer-db
+    networks:
+      - acmeair
+  
+  acmeair-flight-db:
+    image: mongo:latest
+    container_name: acmeair-flight-db
+    networks:
+      - acmeair
+  
+  acmeair-nginx1:
+    image: acmeair-nginx1
+    container_name: acmeair-nginx1
+    build: ./acmeair-mainservice-java/nginx
+    ports:
+      - 80:80
+    networks:
+      - acmeair
+    volumes:
+      - acmeair-nginx1:/www/public
+    restart: always
+  
+  acmeair-mainservice-java:
+    image: sys-ltic-docker-local.artifactory.swg-devops.com/acmeair/acmeair-mainservice-java:latest
+    container_name: acmeair-mainservice-java
+    networks:
+        - acmeair
+    environment:
+      - LICENCE=accept
+  
+  acmeair-authservice-java:
+    image: sys-ltic-docker-local.artifactory.swg-devops.com/acmeair/acmeair-authservice-java:latest
+    container_name: acmeair-authservice-java
+    networks:
+        - acmeair
+    environment:
+      - LICENCE=accept
+  
+  acmeair-bookingservice-java:
+    image: sys-ltic-docker-local.artifactory.swg-devops.com/acmeair/acmeair-bookingservice-java:latest
+    container_name: acmeair-bookingservice-java
+    networks:
+        - acmeair
+    environment:
+      - LICENCE=accept
+      - MONGO_HOST=acmeair-booking-db
+      - MONGO_DBNAME=acmeair_bookingdb
+  
+  acmeair-customerservice-java:
+    image: sys-ltic-docker-local.artifactory.swg-devops.com/acmeair/acmeair-customerservice-java:latest
+    container_name: acmeair-customerservice-java
+    networks:
+        - acmeair
+    environment:
+      - LICENCE=accept
+      - MONGO_HOST=acmeair-customer-db
+      - MONGO_DBNAME=acmeair_customerdb
+  
+  acmeair-flightservice-java:
+    image: sys-ltic-docker-local.artifactory.swg-devops.com/acmeair/acmeair-flightservice-java:latest
+    container_name: acmeair-flightservice-java
+    networks:
+        - acmeair
+    environment:
+      - LICENCE=accept
+      - MONGO_HOST=acmeair-flight-db
+      - MONGO_DBNAME=acmeair_flightdb
+
+volumes:
+  acmeair-nginx1:
+    name: acmeair-nginx1
